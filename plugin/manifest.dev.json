@@ -1,0 +1,25 @@
+{
+  "manifest_version": 1,
+  "version": 1,
+  "type": "APP",
+  "name": {
+    "ja": "テーブル分割プラグイン",
+    "en": "table split plugin"
+  },
+  "description": {
+    "ja": "サブテーブルを分割します。",
+    "en": "Split the subtable."
+  },
+  "icon": "icon.png",
+  "desktop": {
+    "js": [
+      "https://localhost:8080/desktop.min.js"
+    ]
+  },
+  "config": {
+    "html": "config.html",
+    "js": [
+      "https://localhost:8080/config.min.js"
+    ]
+  }
+}

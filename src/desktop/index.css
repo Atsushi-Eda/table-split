@@ -1,0 +1,19 @@
+.kuc-header-label{
+  display: block;
+}
+.kuc-input-number .kuc-input-text{
+  display: inline-block;
+  text-align: right;
+}
+.split-table-detail{
+  padding-bottom: 10px;
+}
+.split-table-detail-number{
+  text-align: right;
+}
+.split-table-detail-multi-line-text{
+  white-space: pre;
+}
+.split-table-detail-multi-values span{
+  margin-right: 10px;
+}
