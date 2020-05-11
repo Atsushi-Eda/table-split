@@ -11,15 +11,15 @@ export default class Root extends React.Component {
   }
   formatSavedValue = (savedValue, tables) => {
     tables.forEach(table => {
-      if(!savedValue[table.code]) savedValue[table.code] = {rows: [[]]};
+      if(!savedValue[table.code]) savedValue[table.code] = {layout: [[]]};
       const fieldsSavedInForm = table.fields.map(field => field.code);
-      savedValue[table.code].rows = savedValue[table.code].rows.map(
+      savedValue[table.code].layout = savedValue[table.code].layout.map(
         row => row.filter(
           field => fieldsSavedInForm.includes(field)
         )
       ).filter((row, index) => (!index || row.length>0));
-      const fieldsSavedInPlugin = (savedValue[table.code] && Array.isArray(savedValue[table.code].rows)) ? savedValue[table.code].rows.flat() : [];
-      savedValue[table.code].rows[0].push(
+      const fieldsSavedInPlugin = (savedValue[table.code] && Array.isArray(savedValue[table.code].layout)) ? savedValue[table.code].layout.flat() : [];
+      savedValue[table.code].layout[0].push(
         ...table.fields.filter(
           field => !fieldsSavedInPlugin.includes(field.code)
         ).map(field => field.code)

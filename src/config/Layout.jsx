@@ -4,7 +4,7 @@ import {DragDropContext} from 'react-beautiful-dnd';
 import Row from "./Row";
 import EmptyRow from "./EmptyRow";
 
-const Rows = ({value, tableProperty, onChange}) => {
+const Layout = ({value, tableProperty, onChange}) => {
   const itemsChunks = value.map(row => row.map(field => ({id: field, content: tableProperty.fields[field].label})));
   const onDragEnd = ({draggableId, source, destination}) => {
     const newValue = value.map(row => [...row]);
@@ -17,11 +17,11 @@ const Rows = ({value, tableProperty, onChange}) => {
       newValue[destinationRowIndex].splice(destination.index, 0, draggableId);
     }
     if(!newValue[sourceRowIndex].length) newValue.splice(sourceRowIndex, 1);
-    onChange('rows', newValue);
+    onChange('layout', newValue);
   }
   return (
     <div>
-      <Label text='rows' />
+      <Label text='layout' />
       <DragDropContext onDragEnd={onDragEnd}>
         {itemsChunks.map((items, rowIndex) =>
           <React.Fragment key={rowIndex}>
@@ -37,4 +37,4 @@ const Rows = ({value, tableProperty, onChange}) => {
     </div>
   );
 }
-export default Rows;
+export default Layout;

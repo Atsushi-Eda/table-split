@@ -1,6 +1,6 @@
 import React from 'react';
 import Space from "./Space";
-import Rows from "./Rows";
+import Layout from "./Layout";
 
 const Detail = ({display, value = {}, tableProperty, spaces, onChange}) => {
   return (
@@ -10,8 +10,8 @@ const Detail = ({display, value = {}, tableProperty, spaces, onChange}) => {
         spaces={spaces}
         onChange={onChange}
       />
-      <Rows
-        value={value.rows}
+      <Layout
+        value={value.layout}
         tableProperty={tableProperty}
         onChange={onChange}
       />
