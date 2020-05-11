@@ -8,9 +8,9 @@ const EditCell = ({property, value = '', onChange}) => {
     return <div className='kuc-input-number'>
       {property.unitPosition === 'BEFORE' ? property.unit : ''}
       <Text
-        value={value}
+        value={type === 'NUMBER' ? value : ''}
         isDisabled={type === 'CALC'}
-        placeholder={!property.hideExpression ? property.expression : ''}
+        placeholder={(!property.hideExpression && property.expression) ? property.expression : ''}
         onChange={onChange}
       />
       {property.unitPosition === 'AFTER' ? property.unit : ''}
@@ -88,7 +88,9 @@ const EditCell = ({property, value = '', onChange}) => {
     }
   }else{
     return <Text
-      value={value}
+      value={!property.expression ? value : ''}
+      isDisabled={property.expression}
+      placeholder={(!property.hideExpression && property.expression) ? property.expression : ''}
       onChange={onChange}
     />;
   }

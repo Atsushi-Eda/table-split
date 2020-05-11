@@ -17,20 +17,6 @@ const kintoneApp = new App(new Connection);
       app: kintone.app.getId()
     }).then(({properties}) => {
       const transpose = a => a[0].map((_, c) => a.map(r => r[c]));
-      const kintoneEventListener = handler =>
-        kintone.events.on(Object.values(properties).reduce((fieldCodes, field) => (
-          field.fields ? [
-            ...fieldCodes,
-            ...Object.keys(field.fields)
-          ] : [
-            ...fieldCodes,
-            field.code
-          ]
-        ), []).reduce((events, fieldCode) => [
-          ...events,
-          `app.record.create.change.${fieldCode}`,
-          `app.record.edit.change.${fieldCode}`
-        ], []), handler);
       Object.entries(tableSplitConfigs).forEach(([tableCode, tableSplitConfig]) => {
         const property = properties[tableCode];
         if(!property) return;
@@ -38,7 +24,7 @@ const kintoneApp = new App(new Connection);
         kintone.app.record.setFieldShown(tableCode, false);
         const space = kintone.app.record.getSpaceElement(tableSplitConfig.space);
         if(!space) return;
-        const columns = transpose(tableSplitConfig.rows);
+        const columns = transpose(tableSplitConfig.layout);
         const domRoot = document.createElement('div');
         domRoot.id = 'table-split-plugin-' + tableCode;
         space.appendChild(domRoot);
@@ -47,7 +33,6 @@ const kintoneApp = new App(new Connection);
             <Label text={property.label} />
             <SplitTable
               mode={event.type === 'app.record.detail.show' ? 'detail' : 'edit'}
-              kintoneEventListener={kintoneEventListener}
               value={event.record[tableCode].value}
               tableCode={tableCode}
               properties={property.fields}

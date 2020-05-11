@@ -7,7 +7,7 @@ export default class SplitTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {data: this.kintoneToKuc(props.value)};
-    if(props.mode === 'edit') props.kintoneEventListener(this.handlerForCalc);
+    if(props.mode === 'edit') this.setSaveEventListener();
   }
   defaultRowData = Object.fromEntries(Object.entries(this.props.properties).map(
     ([fieldCode, property]) => [
@@ -38,24 +38,14 @@ export default class SplitTable extends React.Component {
       )
     )
   )
-  handlerForCalc = () => {
-    setTimeout(() => {
-      const dataOfKintone = this.kintoneToKuc(kintone.app.record.get().record[this.props.tableCode].value);
-      this.setState({data: dataOfKintone});
-    }, 1000);
-  }
-  handleRowChange = ({data}) => {
-    this.setState({data});
-    const event = kintone.app.record.get();
-    event.record[this.props.tableCode].value = this.kucToKintone(data);
-    kintone.app.record.set(event);
-  }
-  handleCellChange = ({data, rowIndex, fieldName}) => {
-    this.setState({data});
-    const newValue = data[rowIndex][fieldName];
-    const event = kintone.app.record.get();
-    event.record[this.props.tableCode].value[rowIndex].value[fieldName].value = newValue;
-    kintone.app.record.set(event);
+  setSaveEventListener = () => {
+    kintone.events.on([
+      'app.record.create.submit',
+      'app.record.edit.submit'
+    ], event => {
+      event.record[this.props.tableCode].value = this.kucToKintone(this.state.data);
+      return event;
+    });
   }
   render() {
     return (
@@ -78,9 +68,9 @@ export default class SplitTable extends React.Component {
         }))}
         data={this.state.data}
         defaultRowData={this.defaultRowData}
-        onRowAdd={this.handleRowChange}
-        onRowRemove={this.handleRowChange}
-        onCellChange={this.handleCellChange}
+        onRowAdd={({data}) => this.setState({data})}
+        onRowRemove={({data}) => this.setState({data})}
+        onCellChange={({data}) => this.setState({data})}
         actionButtonsShown={this.props.mode === 'edit'}
       />
     );
