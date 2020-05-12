@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from "moment";
 
 const DetailCell = ({property, value = ''}) => {
   const type = property.type;
@@ -16,8 +17,12 @@ const DetailCell = ({property, value = ''}) => {
     return <div className='split-table-detail split-table-detail-multi-values'>
       {value.map((v, i) => <span key={i}>{v}</span>)}
     </div>;
+  }else if(['DATETIME'].includes(type)){
+    return <div className='split-table-detail split-table-detail-text'>
+      {moment(value).isValid() ? moment(value).format('YYYY-MM-DD HH:mm') : value}
+    </div>;
   }else if(['LINK'].includes(type)){
-    return <div className='split-table-detail split-table-detail-link'>
+    return <div className='split-table-detail split-table-detail-text'>
       <a
         href={(property.protocol === 'CALL' ? 'callto:' : (property.protocol === 'MAIL' ? 'mailto:' : '')) + value}
         target={property.protocol === 'WEB' ? '_blank:' :  ''}
