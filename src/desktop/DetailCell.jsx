@@ -16,12 +16,8 @@ const DetailCell = ({property, value = ''}) => {
     return <div className='split-table-detail split-table-detail-multi-values'>
       {value.map((v, i) => <span key={i}>{v}</span>)}
     </div>;
-  }else if(['CHECK_BOX', 'MULTI_SELECT'].includes(type)){
-    return <div className='split-table-detail split-table-detail-multi-values'>
-      {value.map((v, i) => <span key={i}>{v}</span>)}
-    </div>;
   }else if(['LINK'].includes(type)){
-    return <div className='split-table-detail split-table-detail-multi-values'>
+    return <div className='split-table-detail split-table-detail-link'>
       <a
         href={(property.protocol === 'CALL' ? 'callto:' : (property.protocol === 'MAIL' ? 'mailto:' : '')) + value}
         target={property.protocol === 'WEB' ? '_blank:' :  ''}
